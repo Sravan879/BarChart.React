@@ -1,0 +1,22 @@
+/* Write your CSS here */
+.back {
+  background-color: #161625;
+  height: 100%;
+  padding: 10px;
+  color: white;
+}
+.back1 {
+  background-color: #1c1c2b;
+  height: 100%;
+  margin: 20px;
+  padding: 10px;
+  border-radius: 7px;
+}
+.bac {
+  display: flex;
+  color: #2cc6c6;
+}
+.img1 {
+  height: 50px;
+  width: 50px;
+}
