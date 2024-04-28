@@ -1,13 +1,5 @@
 import React, {Component} from 'react'
 import Loader from 'react-loader-spinner'
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Legend,
-  ResponsiveContainer,
-} from 'recharts'
 import VaccinationCoverage from '../VaccinationCoverage'
 import VaccinationByGender from '../VaccinationByGender'
 import VaccinationByAge from '../VaccinationByAge'
@@ -77,11 +69,11 @@ class CowinDashboard extends Component {
           <VaccinationCoverage data={data} />
         </div>
         <div className="back1">
-          <h1>Vaccination By Gender</h1>
+          <h1>Vaccination By gender</h1>
           <VaccinationByGender data={data.vaccination_by_gender} />
         </div>
         <div className="back1">
-          <h1>Vaccination By Age</h1>
+          <h1>Vaccination by Age</h1>
           <VaccinationByAge data={data.vaccination_by_age} />
         </div>
       </div>
