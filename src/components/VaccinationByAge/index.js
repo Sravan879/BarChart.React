@@ -3,8 +3,7 @@ import {PieChart, Pie, Legend, Cell, ResponsiveContainer} from 'recharts'
 
 const VaccinationByAge = ({data}) => {
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      <PieChart>
+      <PieChart width={1000} height={300}>
         <Pie
           cx="50%"
           cy="50%"
@@ -26,7 +25,6 @@ const VaccinationByAge = ({data}) => {
           align="right"
         />
       </PieChart>
-    </ResponsiveContainer>
   )
 }
 
