@@ -17,8 +17,7 @@ const VaccinationCoverage = ({data}) => {
   }
 
   return (
-    <ResponsiveContainer width="100%" height={500}>
-      <BarChart data={data.last_7_days_vaccination} margin={{top: 5}}>
+      <BarChart data={data.last_7_days_vaccination} margin={{top: 5}} width={1000} height={300}>
         <XAxis dataKey="vaccine_date" tick={{stroke: 'gray', strokeWidth: 1}} />
         <YAxis
           tickFormatter={DataFormatter}
@@ -28,7 +27,6 @@ const VaccinationCoverage = ({data}) => {
         <Bar dataKey="dose_1" name="Dose1" fill="#5a8dee" barSize="20%" />
         <Bar dataKey="dose_2" name="Dose2" fill="#f54394" barSize="20%" />
       </BarChart>
-    </ResponsiveContainer>
   )
 }
 
