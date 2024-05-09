@@ -5,11 +5,17 @@ import VaccinationByGender from '../VaccinationByGender'
 import VaccinationByAge from '../VaccinationByAge'
 import './index.css'
 
+const apiConstant = {
+  success: 'SUCCESS',
+  failure: 'FAILURE',
+  progress: 'PROGRESS',
+}
+
 class CowinDashboard extends Component {
   state = {
     isLoading: true,
-    data: null,
-    error: null,
+    apiStatus: '',
+    data: [],
   }
 
   componentDidMount() {
@@ -17,42 +23,46 @@ class CowinDashboard extends Component {
   }
 
   getData = async () => {
+    this.setState({
+      apiStatus: apiConstant.progress,
+    })
+
     const apiUrl = 'https://apis.ccbp.in/covid-vaccination-data'
-    try {
-      const response = await fetch(apiUrl)
-      if (!response.ok) {
-        throw new Error('Failed to fetch data')
-      }
-      const data = await response.json()
-      this.setState({data, isLoading: false})
-    } catch (error) {
-      this.setState({error: error.message, isLoading: false})
+    const response = await fetch(apiUrl)
+    if (response.ok) {
+      this.setState({
+        apiStatus: apiConstant.success,
+      })
+    } else if (response.status === 401) {
+      this.setState({
+        apiStatus: apiConstant.failure,
+      })
     }
+    const data = await response.json()
+    this.setState({data})
   }
 
-  render() {
-    const {data, isLoading, error} = this.state
+  renderFailureView = () => {
+    return (
+      <div className="failure-view">
+        <img
+          src="https://assets.ccbp.in/frontend/react-js/api-failure-view.png"
+          alt="failure view"
+        />
+        <h1>Something went wrong</h1>
+      </div>
+    )
+  }
 
-    if (isLoading) {
-      return (
-        <div className="loader-container">
-          <Loader type="ThreeDots" color="#ffffff" height={80} width={80} />
-        </div>
-      )
-    }
+  renderProgress = () => {
+    return (
+      <div className="loader-container">
+        <Loader type="ThreeDots" color="#ffffff" height={80} width={80} />
+      </div>
+    )
+  }
 
-    if (error) {
-      return (
-        <div className="failure-view">
-          <img
-            src="https://assets.ccbp.in/frontend/react-js/api-failure-view.png"
-            alt="failure view"
-          />
-          <h1>Something went wrong</h1>
-        </div>
-      )
-    }
-
+  renderSuccess = () => {
     return (
       <div className="back">
         <div className="bac">
@@ -66,19 +76,34 @@ class CowinDashboard extends Component {
         <h1>CoWIN Vaccination in India</h1>
         <div className="back1">
           <h1>Vaccination Coverage</h1>
-          <VaccinationCoverage data={data} />
+          <VaccinationCoverage data={this.data} />
         </div>
         <div className="back1">
-          <h1>Vaccination By gender</h1>
-          <VaccinationByGender data={data.vaccination_by_gender} />
+          <h1>Vaccination by gender</h1>
+          <VaccinationByGender data={this.data.vaccination_by_gender} />
         </div>
         <div className="back1">
           <h1>Vaccination by Age</h1>
-          <VaccinationByAge data={data.vaccination_by_age} />
+          <VaccinationByAge data={this.data.vaccination_by_age} />
         </div>
       </div>
     )
   }
+
+  render() {
+    const {apiStatus} = this.state
+    switch (apiStatus) {
+      case apiConstant.success:
+        return this.renderSuccess()
+      case apiConstant.failure:
+        return this.renderFailureView()
+      case apiConstant.progress:
+        return this.renderProgress()
+      default:
+        return null
+    }
+  }
 }
 
 export default CowinDashboard
+
