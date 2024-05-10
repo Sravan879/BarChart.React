@@ -63,6 +63,7 @@ class CowinDashboard extends Component {
   }
 
   renderSuccess = () => {
+    const {data} = this.state
     return (
       <div className="back">
         <div className="bac">
@@ -76,15 +77,15 @@ class CowinDashboard extends Component {
         <h1>CoWIN Vaccination in India</h1>
         <div className="back1">
           <h1>Vaccination Coverage</h1>
-          <VaccinationCoverage data={this.data} />
+          <VaccinationCoverage data={data} />
         </div>
         <div className="back1">
           <h1>Vaccination by gender</h1>
-          <VaccinationByGender data={this.data.vaccination_by_gender} />
+          <VaccinationByGender data={data.vaccination_by_gender} />
         </div>
         <div className="back1">
           <h1>Vaccination by Age</h1>
-          <VaccinationByAge data={this.data.vaccination_by_age} />
+          <VaccinationByAge data={data.vaccination_by_age} />
         </div>
       </div>
     )
