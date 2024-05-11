@@ -29,51 +29,51 @@ class CowinDashboard extends Component {
 
     const apiUrl = 'https://apis.ccbp.in/covid-vaccination-data'
     const response = await fetch(apiUrl)
+
     if (response.ok) {
+      //Access the data inside the if condition
+      const data = await response.json()
+
+      //format the data
+      const updatedData = {
+        last7Days: data.last_7_days_vaccination,
+        vacByAge: data.vaccination_by_age,
+        vacByGender: data.vaccination_by_gender,
+      }
+
+      //update the state directly here
       this.setState({
         apiStatus: apiConstant.success,
+        data: updatedData,
       })
-    } else if (response.status === 401) {
+    } else {
+      //use the else condition to update the failure case
       this.setState({
         apiStatus: apiConstant.failure,
       })
     }
-    const data = await response.json()
-    this.setState({data})
   }
 
-  renderFailureView = () => {
-    return (
-      <div className="failure-view">
-        <img
-          src="https://assets.ccbp.in/frontend/react-js/api-failure-view.png"
-          alt="failure view"
-        />
-        <h1>Something went wrong</h1>
-      </div>
-    )
-  }
+  renderFailureView = () => (
+    <div className="failure-view">
+      <img
+        src="https://assets.ccbp.in/frontend/react-js/api-failure-view.png"
+        alt="failure view"
+      />
+      <h1>Something went wrong</h1>
+    </div>
+  )
 
-  renderProgress = () => {
-    return (
-      <div className="loader-container">
-        <Loader type="ThreeDots" color="#ffffff" height={80} width={80} />
-      </div>
-    )
-  }
+  renderProgress = () => (
+    <div className="loader-container">
+      <Loader type="ThreeDots" color="#ffffff" height={80} width={80} />
+    </div>
+  )
 
   renderSuccess = () => {
     const {data} = this.state
     return (
       <div className="back">
-        <div className="bac">
-          <img
-            src="https://assets.ccbp.in/frontend/react-js/cowin-logo.png"
-            className="img1"
-            alt="website logo"
-          />
-          <h1>co-WIN</h1>
-        </div>
         <h1>CoWIN Vaccination in India</h1>
         <div className="back1">
           <h1>Vaccination Coverage</h1>
@@ -81,28 +81,42 @@ class CowinDashboard extends Component {
         </div>
         <div className="back1">
           <h1>Vaccination by gender</h1>
-          <VaccinationByGender data={data.vaccination_by_gender} />
+          <VaccinationByGender data={data.vacByGender} />
         </div>
         <div className="back1">
           <h1>Vaccination by Age</h1>
-          <VaccinationByAge data={data.vaccination_by_age} />
+          <VaccinationByAge data={data.vacByAge} />
         </div>
       </div>
     )
   }
+  rey = () => {
+  const { apiConstant } = this.state
+
+  switch (apiStatus) {
+    case apiConstant.success:
+      return this.renderSuccess();
+    case apiConstant.failure:
+      return this.renderFailureView();
+    case apiConstant.progress:
+      return this.renderProgress();
+    default:
+      return null;
+  }
+}
 
   render() {
-    const {apiStatus} = this.state
-    switch (apiStatus) {
-      case apiConstant.success:
-        return this.renderSuccess()
-      case apiConstant.failure:
-        return this.renderFailureView()
-      case apiConstant.progress:
-        return this.renderProgress()
-      default:
-        return null
-    }
+    return (
+      <div className="bac">
+        <img
+          src="https://assets.ccbp.in/frontend/react-js/cowin-logo.png"
+          className="img1"
+          alt="website logo"
+        />
+        <h1>co-WIN</h1>
+        {this.rey()}
+      </div>
+    )
   }
 }
 
