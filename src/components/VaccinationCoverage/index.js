@@ -17,7 +17,7 @@ const VaccinationCoverage = ({data}) => {
   }
 
   return (
-      <BarChart data={data.last_7_days_vaccination} margin={{top: 5}} width={1000} height={300}>
+      <BarChart data={data.last7Days} margin={{top: 5}} width={1000} height={300}>
         <XAxis dataKey="vaccine_date" tick={{stroke: 'gray', strokeWidth: 1}} />
         <YAxis
           tickFormatter={DataFormatter}
